@@ -14,6 +14,11 @@ version = mod_version
 group = mod_group_id
 
 repositories {
+    exclusiveContent {
+        forRepository { maven { name = "Modrinth"; url = "https://api.modrinth.com/maven" } }
+        filter { includeGroup "maven.modrinth" }
+    }
+
     mavenLocal()
     
     flatDir {
@@ -88,8 +93,8 @@ configurations {
 
 dependencies {
     //implementation "curse.maven:parcool-482378:7445369"
-    implementation "curse.maven:epic-fight-mod-405076:7345490"
-    implementation "libs:ParCool:3.4.3.0"
+    implementation "maven.modrinth:vu3NZ5Ma:8HHhJt6i"
+    implementation "maven.modrinth:Fsvx2bdR:ZgAHzqRi"
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
