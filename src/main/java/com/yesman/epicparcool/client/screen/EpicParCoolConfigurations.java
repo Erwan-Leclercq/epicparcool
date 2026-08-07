@@ -72,6 +72,10 @@ public class EpicParCoolConfigurations extends Screen {
                         runnable.run();
                     }
 
+                    IS_WEAPON_TO_BACK.save();
+                    ParCoolConfig.Client.getInstance().StaminaType.save();
+
+
                     this.minecraft.setScreen(this.parentScreen);
                 })
                 .xParams(115, 80)
@@ -123,7 +127,6 @@ public class EpicParCoolConfigurations extends Screen {
                 AnchoredWidget.VerticalAnchorType.TOP_BOTTOM, Component.empty());
 
         System.out.println(ParCoolConfig.Client.getInstance().StaminaType.get());
-
         widgetTable
                 .newRow()
                 .addWidget(
@@ -183,7 +186,7 @@ public class EpicParCoolConfigurations extends Screen {
                                 AnchoredWidget.HorizontalAnchorType.RIGHT_WIDTH,
                                 AnchoredWidget.VerticalAnchorType.TOP_HEIGHT,
                                 () -> (boolean) IS_WEAPON_TO_BACK.get(),
-                                value -> setIsWeaponToBack((boolean)value),
+                                value -> IS_WEAPON_TO_BACK.set((boolean) value),
                                 2,
                                 Component.translatable("gui.epicparcool.widget.config_screen.weapon_to_back"),
                                 List.of(aList),
@@ -195,10 +198,6 @@ public class EpicParCoolConfigurations extends Screen {
         ;
 
         this.widgetTable.initialize(false);
-    }
-
-    private void setIsWeaponToBack(boolean value) {
-            IS_WEAPON_TO_BACK = BUILDER.define("is_weapon_to_back", value);
     }
 
     @Override
