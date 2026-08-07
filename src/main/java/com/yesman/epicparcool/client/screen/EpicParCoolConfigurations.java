@@ -200,6 +200,14 @@ public class EpicParCoolConfigurations extends Screen {
         this.widgetTable.initialize(false);
     }
 
+    public static boolean getWeaponToBack() {
+        try{
+            return IS_WEAPON_TO_BACK.get();
+        }catch(Exception e){
+            return false;
+        }
+    }
+
     @Override
     protected void init() {
         this.addRenderableWidget(this.saveButton);

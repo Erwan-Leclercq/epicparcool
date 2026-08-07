@@ -20,6 +20,8 @@ import com.yesman.epicparcool.ParCoolUtils;
 import com.yesman.epicparcool.ParCoolUtils.ClingType;
 import com.yesman.epicparcool.mixin.EpicFightMixinLayer;
 import com.yesman.epicparcool.mixin.ParCoolMixinRideZiplineAccessor;
+import com.yesman.epicparcool.client.screen.EpicParCoolConfigurations;
+
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -428,14 +430,22 @@ public class ParCoolAnimations {
                     .addState(EntityState.CAN_USE_ITEM, false)
         );
 
-        BIPED_FAST_RUN = builder.nextAccessor("biped/fast_run", (accessor) ->
+        if(EpicParCoolConfigurations.getWeaponToBack()) {
+            BIPED_FAST_RUN = builder.nextAccessor("biped/fast_run", (accessor) ->
+                new StaticAnimation(true, accessor, Armatures.BIPED)
+                    .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                    .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                    .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
+                    .newTimePair(0.0F, 100.0F)
+                        .addStateRemoveOld(EntityState.CAN_USE_ITEM, false)
+            );
+        }else{
+            BIPED_FAST_RUN = builder.nextAccessor("biped/fast_run", (accessor) ->
             new StaticAnimation(true, accessor, Armatures.BIPED)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
-                .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 100.0F)
                     .addStateRemoveOld(EntityState.CAN_USE_ITEM, false)
-        );
+            ); 
+        }
 
         BIPED_CAT_LEAP = builder.nextAccessor("biped/cat_leap", (accessor) ->
             new StaticAnimation(0.05F, false, accessor, Armatures.BIPED)
