@@ -1,5 +1,7 @@
 package com.yesman.epicparcool;
 
+import java.io.ObjectInputFilter.Config;
+
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -10,6 +12,8 @@ import com.yesman.epicparcool.event.ParCoolEvents;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLConstructModEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import yesman.epicfight.api.animation.LivingMotion;
@@ -22,22 +26,25 @@ public class EpicParCool {
 	public static final Logger LOGGER = LogUtils.getLogger();
 	public static final String MODID = "epicparcool";
 	public static final String LEAST_PARCOOL_VERSION = "3.4.0.6";
-	
+
 	public EpicParCool(IEventBus modEventBus, ModContainer modContainer) {
 		modEventBus.addListener(ParCoolEvents::onSetup);
 		modEventBus.addListener(this::constructMod);
-		
+
 		if (EpicFightSharedConstants.isPhysicalClient()) {
 			modEventBus.addListener(ParCoolClientEvents::onSetup);
-            modContainer.registerExtensionPoint(IConfigScreenFactory.class, EpicParCoolConfigurations::new);
+			modContainer.registerExtensionPoint(IConfigScreenFactory.class, EpicParCoolConfigurations::new);
 
-            EpicFightEventHooks.Player.CAST_SKILL.registerEvent(ParCoolClientEvents::skillExecute);
-            EpicFightClientEventHooks.Entity.MODIFY_PLAYER_LIVING_MOTION_BASE.registerEvent(ParCoolClientEvents::onBaseLayerUpdateEvent);
+			EpicFightEventHooks.Player.CAST_SKILL.registerEvent(ParCoolClientEvents::skillExecute);
+			EpicFightClientEventHooks.Entity.MODIFY_PLAYER_LIVING_MOTION_BASE
+					.registerEvent(ParCoolClientEvents::onBaseLayerUpdateEvent);
+
 		}
+		modContainer.registerConfig(ModConfig.Type.CLIENT, EpicParCoolConfigurations.SPEC);
+		EpicFightEventHooks.Animation.INIT_ANIMATOR.registerEvent(ParCoolEvents::onInitAnimatorEvent);
 
-        EpicFightEventHooks.Animation.INIT_ANIMATOR.registerEvent(ParCoolEvents::onInitAnimatorEvent);
 	}
-	
+
 	public void constructMod(FMLConstructModEvent event) {
 		LivingMotion.ENUM_MANAGER.registerEnumCls(EpicParCool.MODID, ParcoolLivingMotions.class);
 	}

@@ -4,8 +4,12 @@
 	"gui.epicparcool.widget.stamina_source.hunger": "Hunger",
 	"gui.epicparcool.widget.stamina_source.paraglider": "Paraglider",
 	"gui.epicparcool.widget.stamina_source.epicfight": "Epic Fight",
+	"gui.epicparcool.widget.weapon_to_back.true": "Yes",
+	"gui.epicparcool.widget.weapon_to_back.false": "No",
 	"gui.epicparcool.widget.config_screen.stamina_source": "Stamina Source",
+	"gui.epicparcool.widget.config_screen.weapon_to_back": "Weapon to the back",
 
+	"gui.epicparcool.tooltip.config_screen.weapon_to_back": "Enable/Disable weapon to go to the player back when sprinting",
 	"gui.epicparcool.tooltip.config_screen.stamina_source": "Determines which mod's stamina will be used for parcool actions",
 
     "gui.epicparcool.config_screen.title": "Configurations",
