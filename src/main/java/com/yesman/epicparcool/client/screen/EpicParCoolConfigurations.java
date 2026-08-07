@@ -201,11 +201,7 @@ public class EpicParCoolConfigurations extends Screen {
     }
 
     public static boolean getWeaponToBack() {
-        try{
-            return IS_WEAPON_TO_BACK.get();
-        }catch(Exception e){
-            return false;
-        }
+        return IS_WEAPON_TO_BACK.get();
     }
 
     @Override

@@ -144,6 +144,20 @@ public class ParCoolAnimations {
     public static final IndependentVariableKey<Float> CLIFF_DEST_Y_ROT = AnimationVariables.unsyncIndependent((animator) -> 0.0F, true);
     public static final IndependentVariableKey<Vec3> CLING_DESTINATION = AnimationVariables.unsyncIndependent((animator) -> animator.getEntityPatch().getOriginal().position(), true);
 
+    public static final AnimationEvent.E0 SET_TOOLS_BACK_IF_ENABLED =
+    (entitypatch, animation, params) -> {
+
+        if (!EpicParCoolConfigurations.getWeaponToBack()) {
+            return;
+        }
+
+        Animations.ReusableSources.SET_TOOLS_BACK.fire(
+            entitypatch,
+            animation,
+            params
+        );
+    };
+
     @SubscribeEvent
     public static void registerAnimations(AnimationRegistryEvent event) {
         event.newBuilder(EpicParCool.MODID, ParCoolAnimations::build);
@@ -430,22 +444,14 @@ public class ParCoolAnimations {
                     .addState(EntityState.CAN_USE_ITEM, false)
         );
 
-        if(EpicParCoolConfigurations.getWeaponToBack()) {
-            BIPED_FAST_RUN = builder.nextAccessor("biped/fast_run", (accessor) ->
-                new StaticAnimation(true, accessor, Armatures.BIPED)
-                    .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                    .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
-                    .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
-                    .newTimePair(0.0F, 100.0F)
-                        .addStateRemoveOld(EntityState.CAN_USE_ITEM, false)
-            );
-        }else{
-            BIPED_FAST_RUN = builder.nextAccessor("biped/fast_run", (accessor) ->
+        BIPED_FAST_RUN = builder.nextAccessor("biped/fast_run", (accessor) ->
             new StaticAnimation(true, accessor, Armatures.BIPED)
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 100.0F)
                     .addStateRemoveOld(EntityState.CAN_USE_ITEM, false)
-            ); 
-        }
+        );
 
         BIPED_CAT_LEAP = builder.nextAccessor("biped/cat_leap", (accessor) ->
             new StaticAnimation(0.05F, false, accessor, Armatures.BIPED)

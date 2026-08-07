@@ -158,7 +158,7 @@ publishMods {
     matcher.find()
 
     // No publishing without matching changelog
-    if (!matcher.hasMatch()) {
+    if (!matcher) {
         println ("No matching changelog found for version ${mod_version} in RELEASE_NOTES.md. Publishing is skipped.")
         return
     };

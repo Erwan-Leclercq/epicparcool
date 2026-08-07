@@ -6,17 +6,17 @@
       "request": "launch",
       "name": "Client",
       "presentation": {
-        "group": "Mod Development - epicparcool",
+        "group": "Mod Development - --",
         "order": 0
       },
-      "projectName": "epicparcool",
+      "projectName": "--",
       "mainClass": "net.neoforged.devlaunch.Main",
       "args": [
-        "@C:\\Users\\Kopse\\Documents\\developement\\neoforge\\1.21.1\\epicparcool\\build\\moddev\\clientRunProgramArgs.txt"
+        "@C:\\Users\\joeyg\\Downloads\\kuronekobestwaifu\\--\\build\\moddev\\clientRunProgramArgs.txt"
       ],
       "vmArgs": [
-        "@C:\\Users\\Kopse\\Documents\\developement\\neoforge\\1.21.1\\epicparcool\\build\\moddev\\clientRunVmArgs.txt",
-        "-Dfml.modFolders\u003depicparcool%%C:\\Users\\Kopse\\Documents\\developement\\neoforge\\1.21.1\\epicparcool\\bin\\main"
+        "@C:\\Users\\joeyg\\Downloads\\kuronekobestwaifu\\--\\build\\moddev\\clientRunVmArgs.txt",
+        "-Dfml.modFolders\u003depicparcool%%C:\\Users\\joeyg\\Downloads\\kuronekobestwaifu\\--\\bin\\main"
       ],
       "cwd": "${workspaceFolder}\\run",
       "env": {},
@@ -28,17 +28,17 @@
       "request": "launch",
       "name": "Data",
       "presentation": {
-        "group": "Mod Development - epicparcool",
+        "group": "Mod Development - --",
         "order": 1
       },
-      "projectName": "epicparcool",
+      "projectName": "--",
       "mainClass": "net.neoforged.devlaunch.Main",
       "args": [
-        "@C:\\Users\\Kopse\\Documents\\developement\\neoforge\\1.21.1\\epicparcool\\build\\moddev\\dataRunProgramArgs.txt"
+        "@C:\\Users\\joeyg\\Downloads\\kuronekobestwaifu\\--\\build\\moddev\\dataRunProgramArgs.txt"
       ],
       "vmArgs": [
-        "@C:\\Users\\Kopse\\Documents\\developement\\neoforge\\1.21.1\\epicparcool\\build\\moddev\\dataRunVmArgs.txt",
-        "-Dfml.modFolders\u003depicparcool%%C:\\Users\\Kopse\\Documents\\developement\\neoforge\\1.21.1\\epicparcool\\bin\\main"
+        "@C:\\Users\\joeyg\\Downloads\\kuronekobestwaifu\\--\\build\\moddev\\dataRunVmArgs.txt",
+        "-Dfml.modFolders\u003depicparcool%%C:\\Users\\joeyg\\Downloads\\kuronekobestwaifu\\--\\bin\\main"
       ],
       "cwd": "${workspaceFolder}\\run",
       "env": {},
@@ -50,17 +50,17 @@
       "request": "launch",
       "name": "GameTestServer",
       "presentation": {
-        "group": "Mod Development - epicparcool",
+        "group": "Mod Development - --",
         "order": 2
       },
-      "projectName": "epicparcool",
+      "projectName": "--",
       "mainClass": "net.neoforged.devlaunch.Main",
       "args": [
-        "@C:\\Users\\Kopse\\Documents\\developement\\neoforge\\1.21.1\\epicparcool\\build\\moddev\\gameTestServerRunProgramArgs.txt"
+        "@C:\\Users\\joeyg\\Downloads\\kuronekobestwaifu\\--\\build\\moddev\\gameTestServerRunProgramArgs.txt"
       ],
       "vmArgs": [
-        "@C:\\Users\\Kopse\\Documents\\developement\\neoforge\\1.21.1\\epicparcool\\build\\moddev\\gameTestServerRunVmArgs.txt",
-        "-Dfml.modFolders\u003depicparcool%%C:\\Users\\Kopse\\Documents\\developement\\neoforge\\1.21.1\\epicparcool\\bin\\main"
+        "@C:\\Users\\joeyg\\Downloads\\kuronekobestwaifu\\--\\build\\moddev\\gameTestServerRunVmArgs.txt",
+        "-Dfml.modFolders\u003depicparcool%%C:\\Users\\joeyg\\Downloads\\kuronekobestwaifu\\--\\bin\\main"
       ],
       "cwd": "${workspaceFolder}\\run",
       "env": {},
@@ -72,17 +72,17 @@
       "request": "launch",
       "name": "Server",
       "presentation": {
-        "group": "Mod Development - epicparcool",
+        "group": "Mod Development - --",
         "order": 3
       },
-      "projectName": "epicparcool",
+      "projectName": "--",
       "mainClass": "net.neoforged.devlaunch.Main",
       "args": [
-        "@C:\\Users\\Kopse\\Documents\\developement\\neoforge\\1.21.1\\epicparcool\\build\\moddev\\serverRunProgramArgs.txt"
+        "@C:\\Users\\joeyg\\Downloads\\kuronekobestwaifu\\--\\build\\moddev\\serverRunProgramArgs.txt"
       ],
       "vmArgs": [
-        "@C:\\Users\\Kopse\\Documents\\developement\\neoforge\\1.21.1\\epicparcool\\build\\moddev\\serverRunVmArgs.txt",
-        "-Dfml.modFolders\u003depicparcool%%C:\\Users\\Kopse\\Documents\\developement\\neoforge\\1.21.1\\epicparcool\\bin\\main"
+        "@C:\\Users\\joeyg\\Downloads\\kuronekobestwaifu\\--\\build\\moddev\\serverRunVmArgs.txt",
+        "-Dfml.modFolders\u003depicparcool%%C:\\Users\\joeyg\\Downloads\\kuronekobestwaifu\\--\\bin\\main"
       ],
       "cwd": "${workspaceFolder}\\run",
       "env": {},
