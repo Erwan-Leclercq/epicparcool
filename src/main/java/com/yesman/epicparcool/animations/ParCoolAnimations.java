@@ -64,6 +64,7 @@ import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.main.EpicFightMod;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+import yesman.epicfight.world.capabilities.item.CapabilityItem;
 
 @EventBusSubscriber(modid = EpicParCool.MODID)
 public class ParCoolAnimations {
@@ -158,6 +159,18 @@ public class ParCoolAnimations {
         );
     };
 
+    public static final AnimationEvent.E2<CapabilityItem, CapabilityItem> SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED = (entitypatch, animation, params) -> {
+        if (!EpicParCoolConfigurations.getWeaponToBack()) {
+            return;
+        }
+
+        Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED.fire(
+            entitypatch,
+            animation,
+            params
+        );
+    };
+
     @SubscribeEvent
     public static void registerAnimations(AnimationRegistryEvent event) {
         event.newBuilder(EpicParCool.MODID, ParCoolAnimations::build);
@@ -166,8 +179,8 @@ public class ParCoolAnimations {
     public static void build(AnimationBuilder builder) {
         BIPED_CLING_TO_CLIFF = builder.nextAccessor("biped/cling_to_cliff", (accessor) ->
             new StaticAnimation(true, accessor, Armatures.BIPED)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .addEvents(SimpleEvent.create((entitypatch, animation, params) -> {
                     if (entitypatch instanceof PlayerPatch<?> playerpatch && playerpatch.isEpicFightMode()) {
@@ -185,8 +198,8 @@ public class ParCoolAnimations {
 
         BIPED_CLING_TO_CLIFF_INNER_CORNER = builder.nextAccessor("biped/cling_to_cliff_inner_corner", (accessor) ->
             new StaticAnimation(true, accessor, Armatures.BIPED)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .addEvents(SimpleEvent.create((entitypatch, animation, params) -> {
                     entitypatch.setYRot(entitypatch.getAnimator().getVariables().getOrDefaultSharedVariable(CLIFF_Y_ROT));
@@ -200,8 +213,8 @@ public class ParCoolAnimations {
 
         BIPED_CLING_TO_CLIFF_OUTER_CORNER = builder.nextAccessor("biped/cling_to_cliff_outer_corner", (accessor) ->
             new StaticAnimation(true, accessor, Armatures.BIPED)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .addEvents(SimpleEvent.create((entitypatch, animation, params) -> {
                     entitypatch.setYRot(entitypatch.getAnimator().getVariables().getOrDefaultSharedVariable(CLIFF_Y_ROT));
@@ -215,8 +228,8 @@ public class ParCoolAnimations {
 
         BIPED_CLING_TO_CLIFF_LOOK_LEFT = builder.nextAccessor("biped/cling_to_cliff_left", (accessor) ->
             new StaticAnimation(true, accessor, Armatures.BIPED)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addProperty(StaticAnimationProperty.FIXED_HEAD_ROTATION, true)
                 .addProperty(StaticAnimationProperty.POSE_MODIFIER, (DynamicAnimation self, Pose pose, LivingEntityPatch<?> entitypatch, float elapsedTime, float partialTicks) -> {
                     if (pose.hasTransform("Head") && entitypatch.getArmature().hasJoint("Head") && entitypatch instanceof AbstractClientPlayerPatch playerpatch) {
@@ -248,8 +261,8 @@ public class ParCoolAnimations {
 
         BIPED_CLING_TO_CLIFF_LOOK_RIGHT = builder.nextAccessor("biped/cling_to_cliff_right", (accessor) ->
             new StaticAnimation(true, accessor, Armatures.BIPED)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addProperty(StaticAnimationProperty.FIXED_HEAD_ROTATION, true)
                 .addProperty(StaticAnimationProperty.POSE_MODIFIER, (DynamicAnimation self, Pose pose, LivingEntityPatch<?> entitypatch, float elapsedTime, float partialTicks) -> {
                     if (pose.hasTransform("Head") && entitypatch.getArmature().hasJoint("Head") && entitypatch instanceof AbstractClientPlayerPatch playerpatch) {
@@ -282,7 +295,7 @@ public class ParCoolAnimations {
             new ActionAnimation(0.05F, accessor, Armatures.BIPED)
                 .addProperty(ActionAnimationProperty.REMOVE_DELTA_MOVEMENT, true)
                 .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(-1.0F, 10.0F))
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS,
                     SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT),
                     SimpleEvent.create(ReusableSources.WALL_JUMP, Side.CLIENT)
@@ -291,7 +304,7 @@ public class ParCoolAnimations {
 
         BIPED_WALL_JUMP_LEFT = builder.nextAccessor("biped/wall_jump_left", (accessor) ->
             new StaticAnimation(0.15F, false, accessor, Armatures.BIPED)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 10.0F)
                     .addStateRemoveOld(EntityState.COMBO_ATTACKS_DOABLE, false)
@@ -304,7 +317,7 @@ public class ParCoolAnimations {
             new ActionAnimation(0.05F, accessor, Armatures.BIPED)
                 .addProperty(ActionAnimationProperty.REMOVE_DELTA_MOVEMENT, true)
                 .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(-1.0F, 10.0F))
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS,
                     SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT),
                     SimpleEvent.create(ReusableSources.WALL_JUMP, Side.CLIENT)
@@ -313,7 +326,7 @@ public class ParCoolAnimations {
 
         BIPED_WALL_JUMP_RIGHT = builder.nextAccessor("biped/wall_jump_right", (accessor) ->
             new StaticAnimation(0.15F, false, accessor, Armatures.BIPED)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 10.0F)
                     .addStateRemoveOld(EntityState.COMBO_ATTACKS_DOABLE, false)
@@ -345,8 +358,8 @@ public class ParCoolAnimations {
                         thighR.rotation().rotateAxis((float)random.nextGaussian() * modifier, RANDOM_AXIS);
                     }
                 })
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 10000.0F)
                     .addStateRemoveOld(EntityState.COMBO_ATTACKS_DOABLE, false)
@@ -385,8 +398,8 @@ public class ParCoolAnimations {
                         armR.rotation().rotateAxis((float)random.nextGaussian() * modifier, RANDOM_AXIS);
                     }
                 })
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 10000.0F)
                     .addStateRemoveOld(EntityState.COMBO_ATTACKS_DOABLE, false)
@@ -396,8 +409,8 @@ public class ParCoolAnimations {
 
         BIPED_WALL_SLIDE_LEFT = builder.nextAccessor("biped/wall_slide_left", (accessor) ->
             new StaticAnimation(true, accessor, Armatures.BIPED)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 10.0F)
                     .addStateRemoveOld(EntityState.COMBO_ATTACKS_DOABLE, false)
@@ -407,8 +420,8 @@ public class ParCoolAnimations {
 
         BIPED_WALL_SLIDE_RIGHT = builder.nextAccessor("biped/wall_slide_right", (accessor) ->
             new StaticAnimation(true, accessor, Armatures.BIPED)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 10.0F)
                     .addStateRemoveOld(EntityState.COMBO_ATTACKS_DOABLE, false)
@@ -418,8 +431,8 @@ public class ParCoolAnimations {
 
         BIPED_WALL_RUN_LEFT = builder.nextAccessor("biped/wall_run_left", (accessor) ->
             new StaticAnimation(true, accessor, Armatures.BIPED)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 0.5F)
                     .addState(EntityState.CAN_USE_ITEM, false)
@@ -427,8 +440,8 @@ public class ParCoolAnimations {
 
         BIPED_WALL_RUN_RIGHT = builder.nextAccessor("biped/wall_run_right", (accessor) ->
             new StaticAnimation(true, accessor, Armatures.BIPED)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 0.5F)
                     .addState(EntityState.CAN_USE_ITEM, false)
@@ -436,8 +449,8 @@ public class ParCoolAnimations {
 
         BIPED_WALL_RUN_VERTICAL = builder.nextAccessor("biped/wall_run_vertical", (accessor) ->
             new StaticAnimation(false, accessor, Armatures.BIPED)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 10.0F)
                     .addState(EntityState.UPDATE_LIVING_MOTION, false)
@@ -447,7 +460,7 @@ public class ParCoolAnimations {
         BIPED_FAST_RUN = builder.nextAccessor("biped/fast_run", (accessor) ->
             new StaticAnimation(true, accessor, Armatures.BIPED)
                 .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 100.0F)
                     .addStateRemoveOld(EntityState.CAN_USE_ITEM, false)
@@ -455,8 +468,8 @@ public class ParCoolAnimations {
 
         BIPED_CAT_LEAP = builder.nextAccessor("biped/cat_leap", (accessor) ->
             new StaticAnimation(0.05F, false, accessor, Armatures.BIPED)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 10.0F)
                     .addStateRemoveOld(EntityState.COMBO_ATTACKS_DOABLE, false)
@@ -474,8 +487,8 @@ public class ParCoolAnimations {
 
                     return MathUtils.bezierCurve(1.0F - elapsedTime / self.getTotalTime());
                 })
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 10.0F)
                     .addStateRemoveOld(EntityState.CAN_USE_ITEM, false)
@@ -483,8 +496,8 @@ public class ParCoolAnimations {
 
         BIPED_HANG_DOWN = builder.nextAccessor("biped/hang_down", (accessor) ->
             new StaticAnimation(true, accessor, Armatures.BIPED)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 10000.0F)
                     .addStateRemoveOld(EntityState.COMBO_ATTACKS_DOABLE, false)
@@ -493,8 +506,8 @@ public class ParCoolAnimations {
 
         BIPED_HANG_DOWN_ORTHOGONAL = builder.nextAccessor("biped/hang_down_orthogonal", (accessor) ->
             new StaticAnimation(true, accessor, Armatures.BIPED)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 10000.0F)
                     .addStateRemoveOld(EntityState.COMBO_ATTACKS_DOABLE, false)
@@ -503,8 +516,8 @@ public class ParCoolAnimations {
 
         BIPED_JUMP_FROM_BAR = builder.nextAccessor("biped/jump_from_bar", (accessor) ->
             new StaticAnimation(false, accessor, Armatures.BIPED)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .addEvents(SimpleEvent.create((entitypatch, animation, param) -> {
                     KeyBindings.getKeyHangDown().setDown(false);
@@ -517,8 +530,8 @@ public class ParCoolAnimations {
 
         BIPED_SLIDE = builder.nextAccessor("biped/slide", (accessor) ->
             new StaticAnimation(true, accessor, Armatures.BIPED)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .addProperty(StaticAnimationProperty.FIXED_HEAD_ROTATION, true)
                 .newTimePair(0.0F, 10000.0F)
@@ -530,8 +543,8 @@ public class ParCoolAnimations {
 
         BIPED_CLIMB_UP_NO_ACTION = builder.nextAccessor("biped/climb_up_no_action", (accessor) ->
             new StaticAnimation(false, accessor, Armatures.BIPED)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 10000.0F)
                     .addStateRemoveOld(EntityState.COMBO_ATTACKS_DOABLE, false)
@@ -543,7 +556,7 @@ public class ParCoolAnimations {
         BIPED_HIDE_IN_BLOCK_HORIZONTAL = builder.nextAccessor("biped/hide_horizontal", (accessor) ->
             new StaticAnimation(true, accessor, Armatures.BIPED)
                 .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS,
-                    SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT),
+                    SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT),
                     SimpleEvent.create((entitypatch, animation, params) -> {
                         if (entitypatch instanceof PlayerPatch<?> playerpatch) {
                             Parkourability parkourability = Parkourability.get(playerpatch.getOriginal());
@@ -556,7 +569,7 @@ public class ParCoolAnimations {
                         }
                     }, Side.CLIENT)
                 )
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 10000.0F)
                     .addStateRemoveOld(EntityState.TURNING_LOCKED, true)
@@ -568,7 +581,7 @@ public class ParCoolAnimations {
         BIPED_RIDE_ZIPLINE_FORWARD = builder.nextAccessor("biped/ride_zipline_forward", (accessor) ->
             new StaticAnimation(false, accessor, Armatures.BIPED)
                 .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS,
-                    SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT),
+                    SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT),
                     SimpleEvent.create((entitypatch, animation, params) -> {
                         ((EpicFightMixinLayer)entitypatch.getClientAnimator().baseLayer).getLinkAnimation().setNextStartTime(0.5F);
                     }, Side.CLIENT)
@@ -590,7 +603,7 @@ public class ParCoolAnimations {
 
                     return Pair.of(prevElapsedTime, modular);
                 })
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 10000.0F)
                     .addStateRemoveOld(EntityState.TURNING_LOCKED, true)
@@ -602,7 +615,7 @@ public class ParCoolAnimations {
         BIPED_RIDE_ZIPLINE_SIDE = builder.nextAccessor("biped/ride_zipline_side", (accessor) ->
             new StaticAnimation(false, accessor, Armatures.BIPED)
                 .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS,
-                    SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT),
+                    SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT),
                     SimpleEvent.create((entitypatch, animation, params) -> {
                         ((EpicFightMixinLayer)entitypatch.getClientAnimator().baseLayer).getLinkAnimation().setNextStartTime(0.5F);
                     }, Side.CLIENT)
@@ -623,7 +636,7 @@ public class ParCoolAnimations {
 
                     return Pair.of(prevElapsedTime, modular);
                 })
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 10000.0F)
                     .addStateRemoveOld(EntityState.TURNING_LOCKED, true)
@@ -639,7 +652,7 @@ public class ParCoolAnimations {
                 .addProperty(ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.TRACE_ORIGIN_AS_DESTINATION)
                 .addProperty(ActionAnimationProperty.COORD_SET_TICK, null)
                 .addProperty(ActionAnimationProperty.COORD_GET, MoveCoordFunctions.WORLD_COORD)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
         );
 
@@ -653,8 +666,8 @@ public class ParCoolAnimations {
                 .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, (DynamicAnimation self, LivingEntityPatch<?> entitypatch, float speed, float prevElapsedTime, float elapsedTime) -> {
                     return 1.5F;
                 })
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 10000.0F)
                     .addStateRemoveOld(EntityState.COMBO_ATTACKS_DOABLE, false)
@@ -674,8 +687,8 @@ public class ParCoolAnimations {
                 .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, (DynamicAnimation self, LivingEntityPatch<?> entitypatch, float speed, float prevElapsedTime, float elapsedTime) -> {
                     return 1.5F;
                 })
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 10000.0F)
                     .addStateRemoveOld(EntityState.COMBO_ATTACKS_DOABLE, false)
@@ -692,8 +705,8 @@ public class ParCoolAnimations {
                     translation.x = 0.0F;
                     translation.z = 0.0F;
                 })
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 10000.0F)
                     .addStateRemoveOld(EntityState.COMBO_ATTACKS_DOABLE, false)
@@ -709,8 +722,8 @@ public class ParCoolAnimations {
                     translation.x = 0.0F;
                     translation.z = 0.0F;
                 })
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
-                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK_WHEN_ITEM_CHANGED, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
+                .addProperty(StaticAnimationProperty.ON_ITEM_CHANGE_EVENT, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED_WHEN_ITEM_CHANGED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
                 .newTimePair(0.0F, 10000.0F)
                     .addStateRemoveOld(EntityState.COMBO_ATTACKS_DOABLE, false)
@@ -755,7 +768,7 @@ public class ParCoolAnimations {
                     return entitypatch.getAnimator().getVariables().getOrDefault(CLING_DESTINATION, BIPED_CLING_START);
                 })
                 .addProperty(ActionAnimationProperty.FIXED_HEAD_ROTATION, false)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
         );
 
@@ -772,7 +785,7 @@ public class ParCoolAnimations {
                     return entitypatch.getAnimator().getVariables().getOrDefaultSharedVariable(CORNER_CLING_DESTINATION);
                 })
                 .addProperty(ActionAnimationProperty.FIXED_HEAD_ROTATION, false)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS,
                     SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT)
                 )
@@ -791,7 +804,7 @@ public class ParCoolAnimations {
                     return entitypatch.getAnimator().getVariables().getOrDefaultSharedVariable(CORNER_CLING_DESTINATION);
                 })
                 .addProperty(ActionAnimationProperty.FIXED_HEAD_ROTATION, false)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS,
                     SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT)
                 )
@@ -805,7 +818,7 @@ public class ParCoolAnimations {
                 .addProperty(ActionAnimationProperty.COORD_SET_TICK, null)
                 .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS,
                     SimpleEvent.create(ReusableSources.PLAY_CLING_MOVE_SOUND, AnimationEvent.Side.CLIENT),
-                    SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT)
+                    SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT)
                 )
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS,
                     SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT)
@@ -820,7 +833,7 @@ public class ParCoolAnimations {
                 .addProperty(ActionAnimationProperty.COORD_SET_TICK, null)
                 .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS,
                     SimpleEvent.create(ReusableSources.PLAY_CLING_MOVE_SOUND, AnimationEvent.Side.CLIENT),
-                    SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT)
+                    SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT)
                 )
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS,
                     SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT)
@@ -843,7 +856,7 @@ public class ParCoolAnimations {
                     return entitypatch.getAnimator().getVariables().getOrDefaultSharedVariable(CORNER_CLING_DESTINATION);
                 })
                 .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS,
-                    SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT),
+                    SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT),
                     SimpleEvent.create(ReusableSources.PLAY_CONER_CLING_MOVE_SOUND, AnimationEvent.Side.CLIENT)
                 )
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS,
@@ -867,7 +880,7 @@ public class ParCoolAnimations {
                     return entitypatch.getAnimator().getVariables().getOrDefaultSharedVariable(CORNER_CLING_DESTINATION);
                 })
                 .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS,
-                    SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT),
+                    SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT),
                     SimpleEvent.create(ReusableSources.PLAY_CONER_CLING_MOVE_SOUND, AnimationEvent.Side.CLIENT)
                 )
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS,
@@ -891,7 +904,7 @@ public class ParCoolAnimations {
                     return entitypatch.getAnimator().getVariables().getOrDefaultSharedVariable(CORNER_CLING_DESTINATION);
                 })
                 .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS,
-                    SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT),
+                    SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT),
                     SimpleEvent.create(ReusableSources.PLAY_CONER_CLING_MOVE_SOUND, AnimationEvent.Side.CLIENT)
                 )
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS,
@@ -915,7 +928,7 @@ public class ParCoolAnimations {
                     return entitypatch.getAnimator().getVariables().getOrDefaultSharedVariable(CORNER_CLING_DESTINATION);
                 })
                 .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS,
-                    SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT),
+                    SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT),
                     SimpleEvent.create(ReusableSources.PLAY_CONER_CLING_MOVE_SOUND, AnimationEvent.Side.CLIENT)
                 )
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS,
@@ -940,7 +953,7 @@ public class ParCoolAnimations {
                 })
                 .addProperty(StaticAnimationProperty.NO_PHYSICS, true)
                 .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS,
-                    SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, AnimationEvent.Side.CLIENT),
+                    SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, AnimationEvent.Side.CLIENT),
                     SimpleEvent.create(ReusableSources.PLAY_CONER_CLING_MOVE_SOUND, AnimationEvent.Side.CLIENT)
                 )
                 .addEvents(StaticAnimationProperty.TICK_EVENTS, SimpleEvent.create(ReusableSources.SCALE_DOWN_ON_CORNER, AnimationEvent.Side.BOTH))
@@ -967,7 +980,7 @@ public class ParCoolAnimations {
                 })
                 .addProperty(StaticAnimationProperty.NO_PHYSICS, true)
                 .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS,
-                    SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT),
+                    SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT),
                     SimpleEvent.create(ReusableSources.PLAY_CONER_CLING_MOVE_SOUND, AnimationEvent.Side.CLIENT)
                 )
                 .addEvents(StaticAnimationProperty.TICK_EVENTS, SimpleEvent.create(ReusableSources.SCALE_DOWN_ON_CORNER, AnimationEvent.Side.BOTH))
@@ -994,7 +1007,7 @@ public class ParCoolAnimations {
                 })
                 .addProperty(StaticAnimationProperty.NO_PHYSICS, true)
                 .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS,
-                    SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT),
+                    SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT),
                     SimpleEvent.create(ReusableSources.PLAY_CONER_CLING_MOVE_SOUND, AnimationEvent.Side.CLIENT)
                 )
                 .addEvents(StaticAnimationProperty.TICK_EVENTS, SimpleEvent.create(ReusableSources.SCALE_DOWN_ON_CORNER, AnimationEvent.Side.BOTH))
@@ -1021,7 +1034,7 @@ public class ParCoolAnimations {
                 })
                 .addProperty(StaticAnimationProperty.NO_PHYSICS, true)
                 .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS,
-                    SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT),
+                    SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT),
                     SimpleEvent.create(ReusableSources.PLAY_CONER_CLING_MOVE_SOUND, AnimationEvent.Side.CLIENT)
                 )
                 .addEvents(StaticAnimationProperty.TICK_EVENTS, SimpleEvent.create(ReusableSources.SCALE_DOWN_ON_CORNER, AnimationEvent.Side.BOTH))
@@ -1037,7 +1050,7 @@ public class ParCoolAnimations {
                 .addProperty(ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.TRACE_ORIGIN_AS_DESTINATION)
                 .addProperty(ActionAnimationProperty.COORD_SET_TICK, null)
                 .addProperty(ActionAnimationProperty.COORD_GET, MoveCoordFunctions.WORLD_COORD)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
         );
 
@@ -1047,7 +1060,7 @@ public class ParCoolAnimations {
                 .addProperty(ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.TRACE_ORIGIN_AS_DESTINATION)
                 .addProperty(ActionAnimationProperty.COORD_SET_TICK, null)
                 .addProperty(ActionAnimationProperty.COORD_GET, MoveCoordFunctions.WORLD_COORD)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
         );
 
@@ -1057,7 +1070,7 @@ public class ParCoolAnimations {
                 .addProperty(ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.TRACE_ORIGIN_AS_DESTINATION)
                 .addProperty(ActionAnimationProperty.COORD_SET_TICK, null)
                 .addProperty(ActionAnimationProperty.COORD_GET, MoveCoordFunctions.WORLD_COORD)
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
         );
 
@@ -1070,7 +1083,7 @@ public class ParCoolAnimations {
                 .addProperty(ActionAnimationProperty.DEST_LOCATION_PROVIDER, (self, entitypatch) -> {
                     return ParCoolUtils.getHangableBars(entitypatch.getOriginal(), Vec3.ZERO);
                 })
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
         );
 
@@ -1083,7 +1096,7 @@ public class ParCoolAnimations {
                 .addProperty(ActionAnimationProperty.DEST_LOCATION_PROVIDER, (self, entitypatch) -> {
                     return ParCoolUtils.getHangableBars(entitypatch.getOriginal(), Vec3.ZERO);
                 })
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
         );
 
@@ -1094,7 +1107,7 @@ public class ParCoolAnimations {
                 .addEvents(SimpleEvent.create((entitypatch, animation, param) -> {
                     KeyBindings.getKeyHangDown().setDown(false);
                 }, Side.LOCAL_CLIENT))
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS,
                     SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT),
                     SimpleEvent.create((entitypatch, animation, param) -> {
@@ -1118,7 +1131,7 @@ public class ParCoolAnimations {
                 .addEvents(SimpleEvent.create((entitypatch, animation, param) -> {
                     KeyBindings.getKeyHangDown().setDown(false);
                 }, Side.LOCAL_CLIENT))
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS,
                     SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT),
                     SimpleEvent.create((entitypatch, animation, param) -> {
@@ -1141,7 +1154,7 @@ public class ParCoolAnimations {
             new ActionAnimation(0.05F, accessor, Armatures.BIPED)
                 .addProperty(ActionAnimationProperty.REMOVE_DELTA_MOVEMENT, true)
                 .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(-1.0F, 10.0F))
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(ReusableSources.PLAY_HANG_MOVE_SOUND, AnimationEvent.Side.CLIENT),SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(ReusableSources.PLAY_HANG_MOVE_SOUND, AnimationEvent.Side.CLIENT),SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, AnimationEvent.SimpleEvent.<AnimationEvent.E1<Boolean>>create((entitypatch, animation, params) -> {
                     if (params.first() && entitypatch instanceof PlayerPatch<?> playerpatch && playerpatch.isEpicFightMode()) {
                         if (Minecraft.getInstance().options.keyUp.isDown() && KeyBindings.getKeyHangDown().isDown()) {
@@ -1157,7 +1170,7 @@ public class ParCoolAnimations {
             new ActionAnimation(0.05F, accessor, Armatures.BIPED)
                 .addProperty(ActionAnimationProperty.REMOVE_DELTA_MOVEMENT, true)
                 .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(-1.0F, 10.0F))
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(ReusableSources.PLAY_HANG_MOVE_SOUND, AnimationEvent.Side.CLIENT), SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(ReusableSources.PLAY_HANG_MOVE_SOUND, AnimationEvent.Side.CLIENT), SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, AnimationEvent.SimpleEvent.<AnimationEvent.E1<Boolean>>create((entitypatch, animation, params) -> {
                     if (params.first() && entitypatch instanceof PlayerPatch<?> playerpatch && playerpatch.isEpicFightMode()) {
                         Vec3 movement = BIPED_HANG_DOWN_MOVE_FORWARD_CROSS1.get().getExpectedMovement(entitypatch, BIPED_HANG_DOWN_MOVE_FORWARD_CROSS1.get().getTotalTime());
@@ -1177,7 +1190,7 @@ public class ParCoolAnimations {
             new ActionAnimation(0.05F, accessor, Armatures.BIPED)
                 .addProperty(ActionAnimationProperty.REMOVE_DELTA_MOVEMENT, true)
                 .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(-1.0F, 10.0F))
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(ReusableSources.PLAY_HANG_MOVE_SOUND, AnimationEvent.Side.CLIENT), SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(ReusableSources.PLAY_HANG_MOVE_SOUND, AnimationEvent.Side.CLIENT), SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, AnimationEvent.SimpleEvent.<AnimationEvent.E1<Boolean>>create((entitypatch, animation, params) -> {
                     if (params.first() && entitypatch instanceof PlayerPatch<?> playerpatch && playerpatch.isEpicFightMode()) {
                         Vec3 movement = BIPED_HANG_DOWN_MOVE_FORWARD_CROSS2.get().getExpectedMovement(entitypatch, BIPED_HANG_DOWN_MOVE_FORWARD_CROSS2.get().getTotalTime());
@@ -1197,7 +1210,7 @@ public class ParCoolAnimations {
             new ActionAnimation(0.05F, accessor, Armatures.BIPED)
                 .addProperty(ActionAnimationProperty.REMOVE_DELTA_MOVEMENT, true)
                 .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(-1.0F, 10.0F))
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(ReusableSources.PLAY_HANG_MOVE_SOUND, AnimationEvent.Side.CLIENT), SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(ReusableSources.PLAY_HANG_MOVE_SOUND, AnimationEvent.Side.CLIENT), SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
         );
 
@@ -1205,7 +1218,7 @@ public class ParCoolAnimations {
             new ActionAnimation(0.05F, accessor, Armatures.BIPED)
                 .addProperty(ActionAnimationProperty.REMOVE_DELTA_MOVEMENT, true)
                 .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(-1.0F, 10.0F))
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(ReusableSources.PLAY_HANG_MOVE_SOUND, AnimationEvent.Side.CLIENT), SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(ReusableSources.PLAY_HANG_MOVE_SOUND, AnimationEvent.Side.CLIENT), SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
         );
 
@@ -1213,7 +1226,7 @@ public class ParCoolAnimations {
             new ActionAnimation(0.15F, 0.6F, accessor, Armatures.BIPED)
                 .addProperty(ActionAnimationProperty.REMOVE_DELTA_MOVEMENT, true)
                 .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(-1.0F, 10.0F))
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(ReusableSources.PLAY_HANG_MOVE_SOUND, AnimationEvent.Side.CLIENT), SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(ReusableSources.PLAY_HANG_MOVE_SOUND, AnimationEvent.Side.CLIENT), SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
         );
 
@@ -1221,7 +1234,7 @@ public class ParCoolAnimations {
             new ActionAnimation(0.15F, 0.45F, accessor, Armatures.BIPED)
                 .addProperty(ActionAnimationProperty.REMOVE_DELTA_MOVEMENT, true)
                 .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(-1.0F, 10.0F))
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(ReusableSources.PLAY_HANG_MOVE_SOUND, AnimationEvent.Side.CLIENT), SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(ReusableSources.PLAY_HANG_MOVE_SOUND, AnimationEvent.Side.CLIENT), SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
         );
 
@@ -1229,7 +1242,7 @@ public class ParCoolAnimations {
             new ActionAnimation(0.15F, 0.45F, accessor, Armatures.BIPED)
                 .addProperty(ActionAnimationProperty.REMOVE_DELTA_MOVEMENT, true)
                 .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(-1.0F, 10.0F))
-                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(ReusableSources.PLAY_HANG_MOVE_SOUND, AnimationEvent.Side.CLIENT), SimpleEvent.create(Animations.ReusableSources.SET_TOOLS_BACK, Side.CLIENT))
+                .addEvents(StaticAnimationProperty.ON_BEGIN_EVENTS, SimpleEvent.create(ReusableSources.PLAY_HANG_MOVE_SOUND, AnimationEvent.Side.CLIENT), SimpleEvent.create(SET_TOOLS_BACK_IF_ENABLED, Side.CLIENT))
                 .addEvents(StaticAnimationProperty.ON_END_EVENTS, SimpleEvent.create(Animations.ReusableSources.REVERT_TO_HANDS, Side.CLIENT))
         );
     }
