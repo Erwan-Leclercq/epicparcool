@@ -1,0 +1,19 @@
+{
+	"gui.epicparcool.widget.stamina_source.none": "Aucun",
+	"gui.epicparcool.widget.stamina_source.parcool": "ParCool",
+	"gui.epicparcool.widget.stamina_source.hunger": "Faim",
+	"gui.epicparcool.widget.stamina_source.paraglider": "Paraglider",
+	"gui.epicparcool.widget.stamina_source.epicfight": "Epic Fight",
+	"gui.epicparcool.widget.weapon_to_back.true": "Oui",
+	"gui.epicparcool.widget.weapon_to_back.false": "Non",
+	"gui.epicparcool.widget.config_screen.stamina_source": "Source de l'endurance",
+	"gui.epicparcool.widget.config_screen.weapon_to_back": "Armes dans le dos",
+
+	"gui.epicparcool.tooltip.config_screen.weapon_to_back": "Activer/Désactiver la mise automatique de l'arme dans le dos du joueur",
+	"gui.epicparcool.tooltip.config_screen.stamina_source": "Détérmine quel système d'endurance va être utiliser par les actions de parcool",
+
+    "gui.epicparcool.config_screen.title": "Configurations",
+	"gui.epicparcool.config_screen.warn": "La configuration ne s'applique pas au serveur dedié",
+
+	"eof": "eof"
+}
