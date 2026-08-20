@@ -35,7 +35,6 @@ import java.util.List;
 
 import static yesman.epicfight.generated.LangKeys.*;
 
-@OnlyIn(Dist.CLIENT)
 public class EpicParCoolConfigurations extends Screen {
     private static final StaminaType[] STAMINA_TYPE_ENUMS = StaminaType.values();
 
